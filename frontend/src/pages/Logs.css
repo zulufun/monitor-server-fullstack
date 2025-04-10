@@ -1,0 +1,310 @@
+.logs-page {
+  padding: 20px;
+}
+
+.logs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.logs-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.logs-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 15px;
+}
+
+.filter-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filter-icon {
+  position: absolute;
+  left: 10px;
+  color: #5f6368;
+}
+
+.filter-dropdown {
+  padding: 8px 12px 8px 35px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  min-width: 120px;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  color: #5f6368;
+}
+
+.search-box input {
+  padding: 8px 12px 8px 35px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  min-width: 200px;
+}
+
+.action-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.auto-scroll-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: #5f6368;
+  cursor: pointer;
+}
+
+.btn-export,
+.btn-refresh {
+  background-color: #f5f5f5;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.logs-container {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  height: calc(100vh - 180px);
+}
+
+.logs-list {
+  padding: 15px;
+  overflow-y: auto;
+  height: 100%;
+  font-family: "Consolas", "Monaco", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.log-entry {
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.log-entry:hover {
+  background-color: #2a2a2a;
+}
+
+.log-timestamp {
+  color: #909090;
+  margin-right: 10px;
+  min-width: 180px;
+  font-size: 0.9em;
+}
+
+.log-level {
+  font-weight: bold;
+  margin-right: 10px;
+  min-width: 70px;
+}
+
+.log-message {
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.log-info .log-level {
+  color: #42a5f5;
+}
+
+.log-warning .log-level {
+  color: #ffb74d;
+}
+
+.log-error .log-level {
+  color: #ef5350;
+}
+
+.no-data {
+  padding: 40px;
+  text-align: center;
+  color: #909090;
+}
+
+/* ANSI Color Classes */
+.ansi-black {
+  color: #3a3a3a;
+}
+
+.ansi-red {
+  color: #e74c3c;
+}
+
+.ansi-green {
+  color: #2ecc71;
+}
+
+.ansi-yellow {
+  color: #f1c40f;
+}
+
+.ansi-blue {
+  color: #3498db;
+}
+
+.ansi-magenta {
+  color: #9b59b6;
+}
+
+.ansi-cyan {
+  color: #1abc9c;
+}
+
+.ansi-white {
+  color: #ecf0f1;
+}
+
+/* Bright colors */
+.ansi-bright-black {
+  color: #666666;
+}
+
+.ansi-bright-red {
+  color: #ff6b6b;
+}
+
+.ansi-bright-green {
+  color: #5efc82;
+}
+
+.ansi-bright-yellow {
+  color: #ffeb3b;
+}
+
+.ansi-bright-blue {
+  color: #42a5f5;
+}
+
+.ansi-bright-magenta {
+  color: #d880fc;
+}
+
+.ansi-bright-cyan {
+  color: #67e8f9;
+}
+
+.ansi-bright-white {
+  color: #ffffff;
+}
+
+/* Background colors */
+.ansi-bg-black {
+  background-color: #000000;
+}
+
+.ansi-bg-red {
+  background-color: #e74c3c;
+}
+
+.ansi-bg-green {
+  background-color: #2ecc71;
+}
+
+.ansi-bg-yellow {
+  background-color: #f1c40f;
+}
+
+.ansi-bg-blue {
+  background-color: #3498db;
+}
+
+.ansi-bg-magenta {
+  background-color: #9b59b6;
+}
+
+.ansi-bg-cyan {
+  background-color: #1abc9c;
+}
+
+.ansi-bg-white {
+  background-color: #ecf0f1;
+}
+
+@media (max-width: 1024px) {
+  .logs-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logs-controls {
+    margin-top: 12px;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .filter-controls {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .action-controls {
+    width: 100%;
+    margin-top: 12px;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .logs-controls {
+    flex-direction: column;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+
+  .logs-container {
+    height: calc(100vh - 250px);
+  }
+
+  .log-entry {
+    flex-direction: column;
+  }
+
+  .log-timestamp,
+  .log-level {
+    margin-bottom: 5px;
+  }
+}

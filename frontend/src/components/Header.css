@@ -1,0 +1,88 @@
+.header {
+  background-color: #333;
+  color: white;
+  padding: 0 20px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-logo h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.header-status {
+  display: flex;
+  gap: 15px;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.connected {
+  background-color: #4caf50;
+}
+
+.disconnected {
+  background-color: #f44336;
+}
+
+.monitoring {
+  background-color: #2196f3;
+}
+
+.idle {
+  background-color: #ffc107;
+}
+
+.header-stats {
+  display: flex;
+  gap: 15px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.stat-label {
+  font-weight: normal;
+}
+
+.stat-value {
+  font-weight: bold;
+}
+
+@media (max-width: 1024px) {
+  .header-stats {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 15px;
+  }
+
+  .header-logo h1 {
+    font-size: 1.2rem;
+  }
+
+  .status-indicator {
+    padding: 3px 8px;
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,239 @@
+.sidebar {
+  width: 250px;
+  background: linear-gradient(to bottom, #1a2236, #1e2a42);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease;
+  z-index: 10;
+  overflow-x: hidden;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 20px 0;
+}
+
+.sidebar-nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 8px;
+  padding: 0 15px;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  gap: 12px;
+  border-radius: 8px;
+  position: relative;
+  font-weight: 500;
+}
+
+.sidebar-nav a svg {
+  font-size: 20px;
+  min-width: 20px;
+}
+
+.sidebar-nav a span {
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.sidebar-nav a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  transform: translateX(5px);
+}
+
+.sidebar-nav a.active {
+  background-color: rgba(33, 150, 243, 0.2);
+  color: #2196f3;
+  font-weight: 600;
+}
+
+.sidebar-nav a.active::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background-color: #2196f3;
+  border-radius: 0 4px 4px 0;
+}
+
+.sidebar-footer {
+  padding: 15px 20px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+/* Collapsed sidebar states */
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar.collapsed .sidebar-nav a span {
+  opacity: 0;
+  width: 0;
+}
+
+.sidebar.collapsed .sidebar-nav a {
+  justify-content: center;
+}
+
+.sidebar.collapsed .sidebar-footer {
+  display: none;
+}
+
+/* Toggle button for sidebar */
+.sidebar-toggle {
+  position: absolute;
+  bottom: 20px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  background-color: #1a2236;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+  background-color: #2196f3;
+  transform: scale(1.1);
+}
+
+/* Item badges */
+.sidebar-nav a .badge {
+  background-color: #f44336;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .sidebar .sidebar-nav a span {
+    opacity: 0;
+    width: 0;
+  }
+
+  .sidebar .sidebar-nav a {
+    justify-content: center;
+  }
+
+  .sidebar .sidebar-footer {
+    display: none;
+  }
+
+  .sidebar:hover {
+    width: 250px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar:hover .sidebar-nav a span {
+    opacity: 1;
+    width: auto;
+  }
+
+  .sidebar:hover .sidebar-nav a {
+    justify-content: flex-start;
+  }
+
+  .sidebar-toggle {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .sidebar-nav {
+    padding: 10px 0;
+  }
+
+  .sidebar-nav ul {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .sidebar-nav li {
+    margin-bottom: 0;
+    padding: 0;
+    flex: 1;
+  }
+
+  .sidebar-nav a {
+    flex-direction: column;
+    padding: 10px 5px;
+    border-radius: 0;
+    gap: 5px;
+    font-size: 12px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidebar-nav a:hover {
+    transform: none;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .sidebar-nav a.active::before {
+    left: 0;
+    top: auto;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .sidebar-nav a svg {
+    font-size: 18px;
+  }
+
+  .sidebar-nav a span {
+    opacity: 1;
+    width: auto;
+    font-size: 11px;
+  }
+
+  .sidebar:hover {
+    width: 100%;
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+}
