@@ -11,6 +11,9 @@ from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from dotenv import load_dotenv
 
+# Import configuration
+import config
+
 # Import the monitoring components
 from security.monitor import SecurityMonitor
 from security.elasticsearch_client import create_es_client
@@ -21,14 +24,7 @@ from security.matching import (
 )
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler("security_monitor.log")
-    ]
-)
+config.configure_logging()
 logger = logging.getLogger("SecurityMonitorAPI")
 
 # Create Flask app
@@ -56,7 +52,7 @@ class QueueHandler(logging.Handler):
         
     def emit(self, record):
         log_entry = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(tz=config.TZ).isoformat(),
             "level": record.levelname.lower(),
             "message": self.format(record)
         }
@@ -89,7 +85,7 @@ class AlertHandler:
     def __call__(self, alert):
         agent_id = alert.get('agent', {}).get('id', 'unknown')
         description = alert.get('rule', {}).get('description', 'No description')
-        timestamp = alert.get('timestamp', datetime.now().isoformat())
+        timestamp = alert.get('timestamp', datetime.now(tz=config.TZ).isoformat())
         
         logger.warning(f"{self.alert_type}: Agent {agent_id} - {description}")
         
@@ -168,28 +164,28 @@ def start_monitoring():
         
     try:
         # Get configuration from request
-        config = request.json
+        config_params = request.json
         
         # Parse start time and window size if provided
         start_time = None
-        if config.get("start_time"):
+        if config_params.get("start_time"):
             try:
-                start_time = datetime.fromisoformat(config.get("start_time"))
+                start_time = datetime.fromisoformat(config_params.get("start_time"))
                 logger.info(f"Using custom start time: {start_time.isoformat()}")
             except ValueError as e:
                 logger.warning(f"Invalid start time format: {str(e)}. Using default.")
         
-        # Get window size (default to 5 seconds if not specified)
-        window_size = int(config.get("window_size", 5))
+        # Get window size (default to config value if not specified)
+        window_size = int(config_params.get("window_size", config.DEFAULT_WINDOW_SIZE))
         logger.info(f"Using window size of {window_size} seconds")
         
         # Create SecurityMonitor instance
         state.security_monitor = SecurityMonitor(
             es_client=state.es_client,
-            index=config.get("index", "wazuh-alerts-*"),
-            interval=int(config.get("interval", 1)),
-            agent_id=config.get("agent_id") if config.get("agent_id") else None,
-            start_time=start_time if start_time else datetime.now() - timedelta(seconds=60),
+            index=config_params.get("index", config.DEFAULT_INDEX),
+            interval=int(config_params.get("interval", config.DEFAULT_INTERVAL)),
+            agent_id=config_params.get("agent_id") if config_params.get("agent_id") else None,
+            start_time=start_time if start_time else datetime.now(tz=config.TZ) - timedelta(seconds=60),
             window_size=window_size
         )
         
@@ -314,7 +310,7 @@ def monitoring_loop():
             logger.info(f"Filtering for agent ID: {state.security_monitor.agent_id}")
             
         last_stats_time = time.time()
-        stats_interval = 60  # Print stats every minute
+        stats_interval = config.STATS_INTERVAL  # Use config value
         
         while state.monitoring_active:
             state.security_monitor.check_new_alerts()
@@ -338,4 +334,4 @@ if __name__ == "__main__":
     load_dotenv()
     
     # Start the Flask application
-    app.run(host='0.0.0.0', port=5001, debug=False, threaded=True)
+    app.run(host=config.API_HOST, port=config.API_PORT, debug=config.DEBUG_MODE, threaded=True)

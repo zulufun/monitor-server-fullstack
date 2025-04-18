@@ -4,8 +4,9 @@ import os
 import logging
 from elasticsearch import Elasticsearch
 from datetime import timezone
-# Create a timezone object for +7
-tz = timezone(timedelta(hours=7))
+
+# Import configuration
+import config
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -96,9 +97,9 @@ def get_wazuh_alerts(
     """
     # Set default time range if not provided
     if not start_time:
-        start_time = (datetime.now(tz=tz) - timedelta(seconds=30)).isoformat()
+        start_time = (datetime.now(tz=config.TZ) - timedelta(seconds=30)).isoformat()
     if not end_time:
-        end_time = datetime.now(tz=tz).isoformat()
+        end_time = datetime.now(tz=config.TZ).isoformat()
     
 
     # Base query

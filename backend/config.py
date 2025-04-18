@@ -3,6 +3,11 @@
 import os
 from typing import Dict, Any
 import logging
+from datetime import timezone, timedelta
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # API Configuration
 API_HOST = os.getenv("API_HOST", "0.0.0.0")
@@ -15,6 +20,10 @@ ES_PORT = os.getenv("ES_PORT", "9200")
 ES_USER = os.getenv("ES_USER", "")
 ES_PASSWORD = os.getenv("ES_PASSWORD", "")
 ES_USE_SSL = os.getenv("ES_USE_SSL", "true").lower() == "true"
+
+# Timezone Configuration
+TIMEZONE_OFFSET = int(os.getenv("TIMEZONE_OFFSET", "0"))  # Default to UTC
+TZ = timezone(timedelta(hours=TIMEZONE_OFFSET))
 
 # Monitoring Configuration
 DEFAULT_INDEX = os.getenv("DEFAULT_INDEX", "wazuh-alerts-*")
@@ -53,6 +62,10 @@ def get_config() -> Dict[str, Any]:
             "password": ES_PASSWORD,
             "use_ssl": ES_USE_SSL,
         },
+        "timezone": {
+            "offset": TIMEZONE_OFFSET,
+            "tz": TZ,
+        },
         "monitoring": {
             "default_index": DEFAULT_INDEX,
             "default_interval": DEFAULT_INTERVAL,
@@ -61,3 +74,6 @@ def get_config() -> Dict[str, Any]:
         },
         "logging": {"level": LOG_LEVEL, "file": LOG_FILE},
     }
+    
+if __name__ == "__main__":
+    print(get_config())

@@ -12,8 +12,8 @@ from .matching import (
     filter_lsass_access_attempt
 )
 
-from datetime import timedelta, timezone
-tz = timezone(timedelta(hours=7))
+# Import configuration
+import config
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -51,11 +51,12 @@ class SecurityMonitor:
         
         # Use provided start time or default to current time minus interval
         if start_time:
-            start_time = start_time.replace(tzinfo=tz)
+            if start_time.tzinfo is None:
+                start_time = start_time.replace(tzinfo=config.TZ)
             self.current_window_start = start_time
             logger.info(f"Starting monitoring from specific time: {start_time.isoformat()}")
         else:
-            self.current_window_start = datetime.now(tz=tz) - timedelta(seconds=interval)
+            self.current_window_start = datetime.now(tz=config.TZ) - timedelta(seconds=interval)
             logger.info(f"Starting monitoring from {interval} seconds ago")
         
         # Calculate the end of the first window
