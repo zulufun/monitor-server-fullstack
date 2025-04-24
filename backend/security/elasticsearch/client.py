@@ -3,10 +3,9 @@ from typing import Dict, List, Optional, Any
 import os
 import logging
 from elasticsearch import Elasticsearch
-from datetime import timezone
 
 # Import configuration
-import config
+from config.settings import TZ, ES_HOST, ES_PORT, ES_USER, ES_PASSWORD, ES_USE_SSL
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -24,16 +23,9 @@ def create_es_client() -> Elasticsearch:
         ValueError: If required environment variables are missing
     """
     try:
-        # Get credentials from environment variables
-        es_host = os.getenv("ES_HOST")
-        es_port = os.getenv("ES_PORT")
-        es_user = os.getenv('ES_USER')
-        es_password = os.getenv('ES_PASSWORD')
-        es_use_ssl = os.getenv('ES_USE_SSL', 'true').lower() == 'true'
-
         # Validate required environment variables
         required_vars = ["ES_HOST", "ES_PORT"]
-        missing_vars = [var for var in required_vars if not os.getenv(var)]
+        missing_vars = [var for var in required_vars if not globals()[var]]
 
         if missing_vars:
             raise ValueError(
@@ -41,18 +33,18 @@ def create_es_client() -> Elasticsearch:
             )
 
         # Build connection URL with credentials if provided
-        protocol = "https" if es_use_ssl else "http"
-        connection_url = f"{protocol}://{es_host}:{es_port}"
+        protocol = "https" if ES_USE_SSL else "http"
+        connection_url = f"{protocol}://{ES_HOST}:{ES_PORT}"
         
         # Create connection arguments
         conn_args = {}
         
         # Add authentication if credentials are provided
-        if es_user and es_password:
-            conn_args["http_auth"] = (es_user, es_password)
+        if ES_USER and ES_PASSWORD:
+            conn_args["http_auth"] = (ES_USER, ES_PASSWORD)
             
         # Add SSL verification settings if using SSL
-        if es_use_ssl:
+        if ES_USE_SSL:
             conn_args["verify_certs"] = False
             
         # Create and test Elasticsearch client
@@ -84,7 +76,7 @@ def get_wazuh_alerts(
 
     Args:
         es_client: Elasticsearch client instance
-        start_time: Start time in ISO format (default: 24 hours ago)
+        start_time: Start time in ISO format (default: 30 seconds ago)
         end_time: End time in ISO format (default: now)
         alert_level: Minimum alert level to filter (optional)
         size: Number of results per page
@@ -97,11 +89,10 @@ def get_wazuh_alerts(
     """
     # Set default time range if not provided
     if not start_time:
-        start_time = (datetime.now(tz=config.TZ) - timedelta(seconds=30)).isoformat()
+        start_time = (datetime.now(tz=TZ) - timedelta(seconds=30)).isoformat()
     if not end_time:
-        end_time = datetime.now(tz=config.TZ).isoformat()
+        end_time = datetime.now(tz=TZ).isoformat()
     
-
     # Base query
     query = {
         "bool": {
