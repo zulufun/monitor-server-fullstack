@@ -59,8 +59,8 @@ def print_directory_tree(root_dir, prefix="", is_last=True, exclude_patterns=Non
         print(f"{child_prefix}└── [Error: {str(e)}]")
 
 def main():
-    root_dir = os.path.join("..", "backend")
-    exclude = ["__pycache__", "log", "test", "requirements"]
+    root_dir = os.path.join("..", "frontend")
+    exclude = ["__pycache__", "log", "test", "requirements", "node_modules", ".json"]
     
     # Convert to absolute path
     root_dir = os.path.abspath(root_dir)

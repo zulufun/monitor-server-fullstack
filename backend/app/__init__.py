@@ -6,6 +6,7 @@ from config.settings import API_HOST, API_PORT, DEBUG_MODE
 from config.logging import configure_logging
 from app.core.state import configure_queue_logging
 from app.api.routes import api_bp
+from app.api.agents import agents_bp
 
 def create_app():
     """
@@ -32,6 +33,7 @@ def create_app():
     
     # Register blueprints
     app.register_blueprint(api_bp)
+    app.register_blueprint(agents_bp)
     
     # Log startup message
     logger = logging.getLogger(__name__)
