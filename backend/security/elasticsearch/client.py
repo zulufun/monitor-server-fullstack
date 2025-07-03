@@ -26,16 +26,19 @@ def create_es_client() -> Elasticsearch:
         # Validate required environment variables
         required_vars = ["ES_HOST", "ES_PORT"]
         missing_vars = [var for var in required_vars if not globals()[var]]
-
+        # print(f"Connecting to Elasticsearch at {connection_url}...")
+        
         if missing_vars:
+            # print(f"Connecting to Elasticsearch at {connection_url}...")
             raise ValueError(
                 f"Missing required environment variables: {', '.join(missing_vars)}"
+
             )
 
         # Build connection URL with credentials if provided
         protocol = "https" if ES_USE_SSL else "http"
         connection_url = f"{protocol}://{ES_HOST}:{ES_PORT}"
-        
+        # print(f"Connecting to Elasticsearch at {connection_url}...")
         # Create connection arguments
         conn_args = {}
         
@@ -49,6 +52,7 @@ def create_es_client() -> Elasticsearch:
             
         # Create and test Elasticsearch client
         es_client = Elasticsearch(connection_url, **conn_args)
+        print(f"Connecting to Elasticsearch at {connection_url}...")
 
         if es_client.ping():
             logger.info("Successfully connected to Elasticsearch")
